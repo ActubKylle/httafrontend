@@ -230,7 +230,7 @@ const App = () => {
                                 {/* Added hover:scale-105 to the inner container for interactive animation */}
                                 <div className="relative bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center w-full h-full shadow-lg transform hover:scale-105 transition-transform duration-300">
                                     {/* Using a placeholder URL for the logo */}
-                                    <img src="https://placehold.co/100x100/22c55e/ffffff?text=HTTA" alt="HTTA Logo" className="w-16 h-16 lg:w-20 lg:h-11 object-contain" />
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRI4tJg2aWQIHDcvkgo5pNzwza4x6KFgb5Naw&s" alt="HTTA Logo" className="w-16 h-16 lg:w-20 lg:h-11 object-contain" />
                                 </div>
                             </div>
                             <div className="hidden sm:block">
