@@ -20,9 +20,9 @@ const App = () => {
 
     // Enhanced gallery images from Facebook page concept
     const galleryImages = [
-        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1574484284002-952d92456975?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        "https://scontent-sea1-1.xx.fbcdn.net/v/t39.30808-6/481183628_1070289631781908_245153255143542819_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGe3xJQBlFGJVBjl_z3bNjKUBlAJtQ-UjdQGUAm1D5SN0Fo-GSYSomzoK9vGDz4WdX4YLzIrO9gV8uEIgiLigEC&_nc_ohc=BNY3VTIIpqIQ7kNvwHn5t7K&_nc_oc=AdlxTr1KK8nxEkDcy2BOzLO5PbVKFk55KFmfs0ttXo3Ql9fbqVTFPZqjj2L4gByeuLM&_nc_zt=23&_nc_ht=scontent-sea1-1.xx&_nc_gid=kUcBW9bY5DxcQfqAxNoLKg&oh=00_AfPmTdGF699pzLXogGcX06v1dhzO4EH2NRw-zJYIkpEKdQ&oe=685AB107",
+        "https://scontent-sea1-1.xx.fbcdn.net/v/t39.30808-6/482003868_1070289735115231_473155605975933866_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFWOd-tEYAGp7pDdAN9EYx29C4gNxFI5an0LiA3EUjlqV3Veq_JLjPOO5AFlrar2s0sIDrH7xq4div3oTbGDOPN&_nc_ohc=jChDpTUW8VcQ7kNvwGkMqHX&_nc_oc=Adl-lfFqpOYb34V3A8nXINLnd_778C0XBtvbuJV5TVFoJpK43tZ1yW-E0_WZ9BqRNhY&_nc_zt=23&_nc_ht=scontent-sea1-1.xx&_nc_gid=LYNqQQ8stCo3RAm5MEi6uw&oh=00_AfOZRz2KsREONmP3K8aR1O57HMyYczqAL9c0jViE_uMTzQ&oe=685A8D3E",
+        "https://scontent-sea1-1.xx.fbcdn.net/v/t1.6435-9/123953992_366293311461739_5837877242810322381_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeFYZ8b37iQCYRrwB4o7bNm-q9vUnaBhLYar29SdoGEthvtnnFiuxJISNw73zOAXFve567f_Gi4pGSD1glf0X-Aq&_nc_ohc=XTOOXrHLzMkQ7kNvwG65T38&_nc_oc=AdnZihdBAhSJu3sf0qffYoAMj45BozvtRBYwa7j_Nsri2hhW8L-jeiIygDFiSnouE1c&_nc_zt=23&_nc_ht=scontent-sea1-1.xx&_nc_gid=py99LGTREQWT591fX3SMCw&oh=00_AfMxx-OSuWCcI-bJQUxg_b22NcXsxtetaG2BJnE2xIfcIQ&oe=687C2AD2",
         "https://images.unsplash.com/photo-1566554273541-37a9ca77b91f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
     ];
 
@@ -230,7 +230,7 @@ const App = () => {
                                 {/* Added hover:scale-105 to the inner container for interactive animation */}
                                 <div className="relative bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center w-full h-full shadow-lg transform hover:scale-105 transition-transform duration-300">
                                     {/* Using a placeholder URL for the logo */}
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRI4tJg2aWQIHDcvkgo5pNzwza4x6KFgb5Naw&s" alt="HTTA Logo" className="w-16 h-16 lg:w-20 lg:h-11 object-contain" />
+                                    <img src="https://scontent-sea1-1.xx.fbcdn.net/v/t1.6435-9/103440114_255080559249682_8395978773242303870_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeH8bHCsMO8F6RHT8ISmDAH_IfZmjKVZ9mYh9maMpVn2ZqXe0dQ0rj6wMS12GuC3s6E5-_i_Eodbts-J2pHQars6&_nc_ohc=Tkp9Wr_hCH8Q7kNvwGTuKt0&_nc_oc=AdnYu_B82t5hZc2IOlsDbIbsYA1IT6Ed3LjMQ0m0fgRNBEeUSJ9-Sm2zMdjTdZlYXL0&_nc_zt=23&_nc_ht=scontent-sea1-1.xx&_nc_gid=pAJUEUyUxyfnka5VmbdqXw&oh=00_AfMSmkUR-pF-pS1Yo68nN2m0m6J7d-wP4q9l2F-5qFWShQ&oe=687C5ACC" alt="HTTA Logo" className="w-16 h-16 lg:w-20 lg:h-11 object-contain" />
                                 </div>
                             </div>
                             <div className="hidden sm:block">
@@ -873,7 +873,7 @@ const App = () => {
                                     <div className="absolute inset-0 bg-gradient-to-br from-green-400 via-green-600 to-green-800 rounded-xl shadow-lg transform rotate-6"></div>
                                     <div className="relative bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center w-full h-full shadow-lg">
                                         {/* Using imported Logoo image */}
-                                        <img src="https://placehold.co/100x100/22c55e/ffffff?text=HTTA" alt="HTTA Logo" className="w-16 h-16 lg:w-20 lg:h-11 object-contain" />
+                                        <img src="https://scontent-sea1-1.xx.fbcdn.net/v/t1.6435-9/103440114_255080559249682_8395978773242303870_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeH8bHCsMO8F6RHT8ISmDAH_IfZmjKVZ9mYh9maMpVn2ZqXe0dQ0rj6wMS12GuC3s6E5-_i_Eodbts-J2pHQars6&_nc_ohc=Tkp9Wr_hCH8Q7kNvwGTuKt0&_nc_oc=AdnYu_B82t5hZc2IOlsDbIbsYA1IT6Ed3LjMQ0m0fgRNBEeUSJ9-Sm2zMdjTdZlYXL0&_nc_zt=23&_nc_ht=scontent-sea1-1.xx&_nc_gid=pAJUEUyUxyfnka5VmbdqXw&oh=00_AfMSmkUR-pF-pS1Yo68nN2m0m6J7d-wP4q9l2F-5qFWShQ&oe=687C5ACC" alt="HTTA Logo" className="w-16 h-16 lg:w-20 lg:h-11 object-contain" />
                                     </div>
                                 </div>
                                 <div>
