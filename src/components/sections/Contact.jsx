@@ -1,7 +1,28 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import { Phone, Mail, MapPin, Clock, ArrowRight } from 'lucide-react';
+import 'leaflet/dist/leaflet.css'; // Import Leaflet's CSS
+import L from 'leaflet';
 
 const Contact = forwardRef(({ getAnimationClass, handleSubmit }, ref) => {
+    useEffect(() => {
+        // Initialize Leaflet map
+        const map = L.map('map', {
+            center: [8.4619, 124.6423], // Coordinates for MLCD Properties Building
+            zoom: 16,
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        // Add a marker to the location
+        L.marker([8.4619, 124.6423]).addTo(map)
+            .bindPopup('<b>HTTA INC.</b><br />MLCD Bldg Mother of Perpetual Help Avenue, Cagayan De Oro City').openPopup();
+
+        // Cleanup function to remove the map instance when the component unmounts
+        return () => map.remove();
+    }, []);
+
     return (
         <section id="contact" ref={ref} className={`py-24 lg:py-32 bg-gradient-to-br from-green-700 to-green-900 text-white relative overflow-hidden ${getAnimationClass('contact', 'fade-in')}`}>
             {/* Abstract shapes */}
@@ -48,28 +69,18 @@ const Contact = forwardRef(({ getAnimationClass, handleSubmit }, ref) => {
                                 <a href="mailto:info@httacademy.edu.ph" className="text-white text-2xl font-semibold hover:text-yellow-300 transition-colors duration-300">info@httacademy.edu.ph</a>
                             </div>
                         </div>
+                        {/* Leaflet Map Integration */}
                         <div className="flex items-center space-x-5">
                             <div className="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
                                 <MapPin className="w-8 h-8 text-yellow-300" />
                             </div>
                             <div>
                                 <p className="text-green-100 text-lg">Visit Us:</p>
-                                <p className="text-white text-2xl font-semibold">Apovel, Bulua, Cagayan de Oro City</p>
-                                {/* Google Maps Embed in an iframe */}
-                                <div className="mt-4 w-full h-64 rounded-xl overflow-hidden shadow-lg border border-white/20">
-                                    <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15783.181829631627!2d124.63060675!3d8.47196015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32ff87019241b315%3A0x63390c5c64c74823!2sCagayan%20de%20Oro%2C%20Northern%20Mindanao%2C%20Philippines!5e0!3m2!1sen!2sph!4v1701321000000!5m2!1sen!2sph" // Placeholder
-                                        width="100%"
-                                        height="100%"
-                                        style={{ border: 0 }}
-                                        allowFullScreen=""
-                                        loading="lazy"
-                                        referrerPolicy="no-referrer-when-downgrade"
-                                        className="rounded-xl"
-                                    ></iframe>
-                                </div>
+                                <p className="text-white text-2xl font-semibold">MLCD Bldg Mother of Perpetual Help Avenue, Cagayan De Oro City</p>
+                                <div id="map" className="mt-4 w-full h-64 rounded-xl shadow-lg border border-white/20"></div>
                             </div>
                         </div>
+
                         <div className="flex items-center space-x-5">
                             <div className="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
                                 <Clock className="w-8 h-8 text-yellow-300" />

@@ -10,8 +10,8 @@ import Programs from './components/sections/Programs';
 import Scholarships from './components/sections/Scholarships';
 import Contact from './components/sections/Contact';
 
-// Assuming you moved your CSS animations to src/styles/index.css and imported it in index.js or equivalent
-// For this environment, we'll keep the style tag as a demonstration, but in a real project, external CSS is preferred.
+// Import your SplashScreen component
+import SplashScreen from './components/common/SplashScreen'; // **Ensure this path is correct**
 
 const App = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,6 +19,7 @@ const App = () => {
     const [activeSection, setActiveSection] = useState('home');
     const [showMessageBox, setShowMessageBox] = useState(false);
     const [revealedSections, setRevealedSections] = useState(new Set());
+    const [showSplashScreen, setShowSplashScreen] = useState(true); // State to control splash screen visibility
 
     // Refs for each section to observe their visibility
     const homeRef = useRef(null);
@@ -35,6 +36,35 @@ const App = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    // --- CRITICAL DEBUGGING AREA ---
+    // Effect to hide splash screen after its animation completes
+    useEffect(() => {
+        console.log("App.js: SplashScreen useEffect initiated. Initial showSplashScreen state:", showSplashScreen);
+        const timerDuration = 4000; // 4 seconds
+
+        const timer = setTimeout(() => {
+            setShowSplashScreen(false);
+            // --- NEW: Immediately reveal the 'home' section when splash hides ---
+            setRevealedSections(prev => new Set(prev).add('home'));
+            console.log("App.js: Timeout fired! showSplashScreen set to FALSE. Home section revealed.");
+        }, timerDuration);
+
+        return () => {
+            clearTimeout(timer);
+            console.log("App.js: SplashScreen useEffect cleanup performed.");
+        };
+    }, []);
+
+    // New useEffect to explicitly monitor when showSplashScreen changes
+    useEffect(() => {
+        console.log("App.js: showSplashScreen state HAS CHANGED to:", showSplashScreen);
+        if (!showSplashScreen) {
+            console.log("App.js: showSplashScreen is now FALSE. Main content should be visible.");
+        }
+    }, [showSplashScreen]); // This hook runs whenever showSplashScreen changes
+    // --- END CRITICAL DEBUGGING AREA ---
+
 
     // Effect for Active Navbar Link and Scroll Animations
     useEffect(() => {
@@ -154,6 +184,8 @@ const App = () => {
                 @keyframes bounce-slow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
                 @keyframes blob { 0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; } 50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; } }
                 @keyframes pulse-logo { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.03); opacity: 0.95; } }
+                @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.1); opacity: 0.8; } }
+
 
                 .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
                 .animate-slide-in-left { animation: slideInLeft 1s ease-out forwards; }
@@ -166,6 +198,8 @@ const App = () => {
                 .animate-bounce-slow { animation: bounce-slow 2s infinite; }
                 .animate-blob { animation: blob 8s infinite; }
                 .animate-pulse-logo { animation: pulse-logo 2s infinite ease-in-out; }
+                .animate-pulse { animation: pulse 2s infinite ease-in-out; } /* Added pulse for the splash screen border */
+
 
                 .delay-100 { animation-delay: 0.1s; } .delay-200 { animation-delay: 0.2s; } .delay-300 { animation-delay: 0.3s; }
                 .delay-400 { animation-delay: 0.4s; } .delay-500 { animation-delay: 0.5s; } .delay-600 { animation-delay: 0.6s; }
@@ -177,112 +211,119 @@ const App = () => {
                 `}
             </style>
 
-            <Navbar
-                isScrolled={isScrolled}
-                isMenuOpen={isMenuOpen}
-                toggleMenu={toggleMenu}
-                smoothScroll={smoothScroll}
-                getNavLinkClass={getNavLinkClass}
-            />
+            {/* Conditionally render the SplashScreen or the main app content */}
+            {showSplashScreen ? (
+                <SplashScreen onAnimationComplete={() => setShowSplashScreen(false)} />
+            ) : (
+                <>
+                    <Navbar
+                        isScrolled={isScrolled}
+                        isMenuOpen={isMenuOpen}
+                        toggleMenu={toggleMenu}
+                        smoothScroll={smoothScroll}
+                        getNavLinkClass={getNavLinkClass}
+                    />
 
-            <Hero ref={homeRef} getAnimationClass={getAnimationClass} smoothScroll={smoothScroll} />
-            <About ref={aboutRef} getAnimationClass={getAnimationClass} galleryImages={galleryImages} currentSlide={currentSlide} setCurrentSlide={setCurrentSlide} smoothScroll={smoothScroll} />
-            <Programs ref={programsRef} getAnimationClass={getAnimationClass} />
+                    <Hero ref={homeRef} getAnimationClass={getAnimationClass} smoothScroll={smoothScroll} />
+                    <About ref={aboutRef} getAnimationClass={getAnimationClass} galleryImages={galleryImages} currentSlide={currentSlide} setCurrentSlide={setCurrentSlide} smoothScroll={smoothScroll} />
+                    <Programs ref={programsRef} getAnimationClass={getAnimationClass} />
 
 
-            <Scholarships ref={scholarshipsRef} getAnimationClass={getAnimationClass} smoothScroll={smoothScroll} />
-            <Contact ref={contactRef} getAnimationClass={getAnimationClass} handleSubmit={handleSubmit} />
+                    <Scholarships ref={scholarshipsRef} getAnimationClass={getAnimationClass} smoothScroll={smoothScroll} />
+                    <Contact ref={contactRef} getAnimationClass={getAnimationClass} handleSubmit={handleSubmit} />
 
-            {/* Enhanced Footer - Icons would need to be passed down or imported directly */}
-            <footer className="bg-gray-900 text-white py-16 lg:py-20">
-                <div className="container mx-auto px-4 lg:px-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
-                        {/* Branding */}
-                        <div className="space-y-6">
-                            <div className="flex items-center space-x-4">
-                                <div className="relative w-14 h-14">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-green-400 via-green-600 to-green-800 rounded-xl shadow-lg transform rotate-6"></div>
-                                    <div className="relative bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center w-full h-full shadow-lg">
-                                        <img src="https://scontent-sea1-1.xx.fbcdn.net/v/t1.6435-9/103440114_255080559249682_8395978773242303870_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeH8bHCsMO8F6RHT8ISmDAH_IfZmjKVZ9mYh9maMpVn2ZqXe0dQ0rj6wMS12GuC3s6E5-_i_Eodbts-J2pHQars6&_nc_ohc=Tkp9Wr_hCH8Q7kNvwGTuKt0&_nc_oc=AdnYu_B82t5hZc2IOlsDbIbsYA1IT6Ed3LjMQ0m0fgRNBEeUSJ9-Sm2zMdjTdZlYXL0&_nc_zt=23&_nc_ht=scontent-sea1-1.xx&_nc_gid=pAJUEUyUxyfnka5VmbdqXw&oh=00_AfMSmkUR-pF-pS1Yo68nN2m0m6J7d-wP4q9l2F-5qFWShQ&oe=687C5ACC" alt="HTTA Logo" className="w-16 h-16 lg:w-20 lg:h-11 object-contain" />
+                    {/* Enhanced Footer - Icons would need to be passed down or imported directly */}
+                    <footer className="bg-gray-900 text-white py-16 lg:py-20">
+                        <div className="container mx-auto px-4 lg:px-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
+                                {/* Branding */}
+                                <div className="space-y-6">
+                                    <div className="flex items-center space-x-4">
+                                        <div className="relative w-14 h-14">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-green-400 via-green-600 to-green-800 rounded-xl shadow-lg transform rotate-6"></div>
+                                            <div className="relative bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center w-full h-full shadow-lg">
+                                                <img src="https://scontent-sea1-1.xx.fbcdn.net/v/t1.6435-9/103440114_255080559249682_8395978773242303870_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeH8bHCsMO8F6RHT8ISmDAH_IfZmjKVZ9mYh9maMpVn2ZqXe0dQ0rj6wMS12GuC3s6E5-_i_Eodbts-J2pHQars6&_nc_ohc=Tkp9Wr_hCH8Q7kNvwGTuKt0&_nc_oc=AdnYu_B82t5hZc2IOlsDbIbsYA1IT6Ed3LjMQ0m0fgRNBEeUSJ9-Sm2zMdjTdZlYXL0&_nc_zt=23&_nc_ht=scontent-sea1-1.xx&_nc_gid=pAJUEUyUxyfnka5VmbdqXw&oh=00_AfMSmkUR-pF-pS1Yo68nN2m0m6J7d-wP4q9l2F-5qFWShQ&oe=687C5ACC" alt="HTTA Logo" className="w-16 h-16 lg:w-20 lg:h-11 object-contain" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className="text-2xl font-bold bg-gradient-to-r from-green-500 to-green-400 bg-clip-text text-transparent">HTTA, Inc.</div>
+                                            <div className="text-sm text-gray-400">Technical Training Academy</div>
+                                        </div>
+                                    </div>
+                                    <p className="text-gray-400 leading-relaxed">
+                                        Empowering futures through quality technical education, proudly serving Cagayan de Oro and beyond.
+                                    </p>
+                                    <div className="flex space-x-4">
+                                        <a href="https://www.facebook.com/highlandstta" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-500 transition-colors duration-300">
+                                            <Facebook size={24} />
+                                        </a>
+                                        <a href="#" className="text-gray-400 hover:text-purple-500 transition-colors duration-300">
+                                            <Instagram size={24} />
+                                        </a>
+                                        <a href="#" className="text-gray-400 hover:text-red-500 transition-colors duration-300">
+                                            <Youtube size={24} />
+                                        </a>
                                     </div>
                                 </div>
+
+                                {/* Quick Links */}
                                 <div>
-                                    <div className="text-2xl font-bold bg-gradient-to-r from-green-500 to-green-400 bg-clip-text text-transparent">HTTA, Inc.</div>
-                                    <div className="text-sm text-gray-400">Technical Training Academy</div>
+                                    <h3 className="text-xl font-semibold text-white mb-6">Quick Links</h3>
+                                    <ul className="space-y-3">
+                                        {['home', 'about', 'programs', 'scholarships', 'contact'].map((section) => (
+                                            <li key={section}>
+                                                <button onClick={() => smoothScroll(section)} className="text-gray-400 hover:text-green-400 transition-colors duration-300">
+                                                    {section.charAt(0).toUpperCase() + section.slice(1)}
+                                                </button>
+                                            </li>
+                                        ))}
+                                        <li><a href="/register" className="text-gray-400 hover:text-green-400 transition-colors duration-300">Enroll Now</a></li>
+                                    </ul>
+                                </div>
+
+                                {/* Programs */}
+                                <div>
+                                    <h3 className="text-xl font-semibold text-white mb-6">Programs</h3>
+                                    <ul className="space-y-3">
+                                        <li><a href="/programs/cookery" className="text-gray-400 hover:text-green-400 transition-colors duration-300">Cookery NC II</a></li>
+                                        <li><a href="/programs/bread-pastry" className="text-gray-400 hover:text-green-400 transition-colors duration-300">Bread & Pastry Production NC II</a></li>
+                                        {/* Add more programs as needed */}
+                                    </ul>
+                                </div>
+
+                                {/* Contact Info */}
+                                <div>
+                                    <h3 className="text-xl font-semibold text-white mb-6">Contact Info</h3>
+                                    <div className="space-y-4 text-gray-400">
+                                        <div className="flex items-center space-x-3">
+                                            <MapPin size={20} className="text-green-400 flex-shrink-0" />
+                                            <span>Apovel, Bulua, Cagayan de Oro City</span>
+                                        </div>
+                                        <div className="flex items-center space-x-3">
+                                            <Phone size={20} className="text-green-400 flex-shrink-0" />
+                                            <a href="tel:+639171234567" className="hover:text-green-400 transition-colors duration-300">+63 917 123 4567</a>
+                                        </div>
+                                        <div className="flex items-center space-x-3">
+                                            <Mail size={20} className="text-green-400 flex-shrink-0" />
+                                            <a href="mailto:info@httacademy.edu.ph" className="hover:text-green-400 transition-colors duration-300">info@httacademy.edu.ph</a>
+                                        </div>
+                                        <div className="flex items-center space-x-3">
+                                            <Clock size={20} className="text-green-400 flex-shrink-0" />
+                                            <span>Mon-Fri: 9:00 AM - 5:00 PM</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <p className="text-gray-400 leading-relaxed">
-                                Empowering futures through quality technical education, proudly serving Cagayan de Oro and beyond.
-                            </p>
-                            <div className="flex space-x-4">
-                                <a href="https://www.facebook.com/highlandstta" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-500 transition-colors duration-300">
-                                    <Facebook size={24} />
-                                </a>
-                                <a href="#" className="text-gray-400 hover:text-purple-500 transition-colors duration-300">
-                                    <Instagram size={24} />
-                                </a>
-                                <a href="#" className="text-gray-400 hover:text-red-500 transition-colors duration-300">
-                                    <Youtube size={24} />
-                                </a>
+
+                            <div className="border-t border-gray-700 mt-16 pt-8 text-center text-gray-500 text-sm">
+                                © {new Date().getFullYear()} HTTA, Inc. All rights reserved.
                             </div>
                         </div>
+                    </footer>
 
-                        {/* Quick Links */}
-                        <div>
-                            <h3 className="text-xl font-semibold text-white mb-6">Quick Links</h3>
-                            <ul className="space-y-3">
-                                {['home', 'about', 'programs', 'scholarships', 'contact'].map((section) => (
-                                    <li key={section}>
-                                        <button onClick={() => smoothScroll(section)} className="text-gray-400 hover:text-green-400 transition-colors duration-300">
-                                            {section.charAt(0).toUpperCase() + section.slice(1)}
-                                        </button>
-                                    </li>
-                                ))}
-                                <li><a href="/register" className="text-gray-400 hover:text-green-400 transition-colors duration-300">Enroll Now</a></li>
-                            </ul>
-                        </div>
-
-                        {/* Programs */}
-                        <div>
-                            <h3 className="text-xl font-semibold text-white mb-6">Programs</h3>
-                            <ul className="space-y-3">
-                                <li><a href="/programs/cookery" className="text-gray-400 hover:text-green-400 transition-colors duration-300">Cookery NC II</a></li>
-                                <li><a href="/programs/bread-pastry" className="text-gray-400 hover:text-green-400 transition-colors duration-300">Bread & Pastry Production NC II</a></li>
-                                {/* Add more programs as needed */}
-                            </ul>
-                        </div>
-
-                        {/* Contact Info */}
-                        <div>
-                            <h3 className="text-xl font-semibold text-white mb-6">Contact Info</h3>
-                            <div className="space-y-4 text-gray-400">
-                                <div className="flex items-center space-x-3">
-                                    <MapPin size={20} className="text-green-400 flex-shrink-0" />
-                                    <span>Apovel, Bulua, Cagayan de Oro City</span>
-                                </div>
-                                <div className="flex items-center space-x-3">
-                                    <Phone size={20} className="text-green-400 flex-shrink-0" />
-                                    <a href="tel:+639171234567" className="hover:text-green-400 transition-colors duration-300">+63 917 123 4567</a>
-                                </div>
-                                <div className="flex items-center space-x-3">
-                                    <Mail size={20} className="text-green-400 flex-shrink-0" />
-                                    <a href="mailto:info@httacademy.edu.ph" className="hover:text-green-400 transition-colors duration-300">info@httacademy.edu.ph</a>
-                                </div>
-                                <div className="flex items-center space-x-3">
-                                    <Clock size={20} className="text-green-400 flex-shrink-0" />
-                                    <span>Mon-Fri: 9:00 AM - 5:00 PM</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="border-t border-gray-700 mt-16 pt-8 text-center text-gray-500 text-sm">
-                        © {new Date().getFullYear()} HTTA, Inc. All rights reserved.
-                    </div>
-                </div>
-            </footer>
-
-            <MessageBox showMessageBox={showMessageBox} closeMessageBox={closeMessageBox} />
+                    <MessageBox showMessageBox={showMessageBox} closeMessageBox={closeMessageBox} />
+                </>
+            )}
         </div>
     );
 };
